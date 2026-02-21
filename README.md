@@ -76,7 +76,7 @@ The model expects CSV files matching the specification produced by the companion
 
 | File | Required | Description |
 |------|----------|-------------|
-| `PERSON.csv` | Yes | One row per enrollee: `ENROLID`, `SEX` (1=Male, 2=Female), `AGE_LAST`, `METAL`, `CSR_INDICATOR`, `ENROL_MONTHS_DURATION` |
+| `PERSON.csv` | Yes | One row per enrollee: `ENROLID`, `SEX` (1=Male, 2=Female), `DOB`, `AGE_LAST`, `METAL`, `CSR_INDICATOR`, `ENROLDURATION` |
 | `DIAG.csv` | Yes | One row per diagnosis: `ENROLID`, `DIAG` (ICD-10-CM code) |
 | `NDC.csv` | No | One row per drug: `ENROLID`, `NDC` (11-digit NDC code) |
 | `HCPCS.csv` | No | One row per procedure: `ENROLID`, `HCPCS` |
@@ -90,6 +90,16 @@ Three CSV files are written to the output directory, each prefixed with the bene
 | `COMPLETE` | One row per enrollee | Logic audit file &mdash; binary (1/0) indicators for every model variable (CCs, HCCs, RXCs, groups, interactions, severity flags) plus intermediate values like `HCC_CNT` and `MODEL_SEGMENT`. No weights or coefficients. |
 | `DIGEST` | One row per enrollee | Summary file &mdash; `ENROLID`, all PERSON columns, and the final `HHS_HCC_RISK_SCORE`. |
 | `COMPONENTS` | One row per enrollee &times; contributing variable | Score breakdown &mdash; `ENROLID`, all PERSON columns, `VARIABLE`, `WEIGHT`, and `CSR_ADJ_FACTOR`. Only variables with non-zero weight are included. The validation property `SUM(WEIGHT * CSR_ADJ_FACTOR) = HHS_HCC_RISK_SCORE` holds for every enrollee. |
+
+### Included Demo Data
+
+The `input/` directory ships with a pre-generated set of 1,000 simulated enrollees (benefit year 2025) produced by the [hhshcc-model-data-simulator](https://github.com/bentwheel/hhshcc-model-data-simulator) using MEPS 2023 data. You can run the model immediately against this data:
+
+```bash
+hhshcc-diy run -y 2025 -i ./input -o ./output -v
+```
+
+The demo population covers all three model segments (25 infants, 223 children, 752 adults), five metal levels, and CSR indicators 1 and 3. See `input/SUMMARY.txt` for a detailed breakdown.
 
 ### Running Tests
 
@@ -125,7 +135,7 @@ This is the most complex stage. The CMS Excel workbook contains 11+ sheets, each
 
 #### Table 3: ICD-10 &rarr; CC Crosswalk
 
-Table 3 is the largest table &mdash; roughly 80,000 rows mapping ICD-10-CM diagnosis codes to Condition Categories (CCs). Each row also contains:
+Table 3 is the largest table &mdash; roughly 11,500 rows mapping ICD-10-CM diagnosis codes to Condition Categories (CCs) under the V08 HHS-HCC classification. Each row also contains:
 
 - **Code validity flags** (`CODE_VALID_FY{year}`) indicating whether the ICD-10 code is valid in a given fiscal year.
 - **MCE (Medicare Code Edit) conditions** that restrict which age or sex a diagnosis code is valid for (e.g., pregnancy codes restricted to females, neonatal codes restricted to age 0).
@@ -252,7 +262,7 @@ The COMPONENTS output preserves this decomposition: `SUM(WEIGHT) * CSR_ADJ_FACTO
 
 ### Metal Levels
 
-Five base metal levels &mdash; Platinum, Gold, Silver, Bronze, Catastrophic &mdash; each with their own set of coefficients in Table 9. Silver plans with Cost-Sharing Reductions are scored using a different metal level's coefficients and then multiplied by a CSR factor, yielding effective variants for 73% AV, 87% AV, and 94% AV Silver plans.
+Five base metal levels &mdash; Platinum, Gold, Silver, Bronze, Catastrophic &mdash; each with their own set of coefficients in Table 9. Coefficients are always looked up at the metal level supplied in the PERSON input file. For Silver plans with Cost-Sharing Reductions (73% AV, 87% AV, 94% AV variants), the CSR adjustment is applied solely as a multiplier on the unadjusted score in Step 5. It is the responsibility of the input file creator to ensure that `METAL` and `CSR_INDICATOR` values are consistent for each enrollee.
 
 ### Year-Specific Behavior
 
@@ -282,6 +292,14 @@ hhshcc-diy-model/
 │       ├── output.py                 # Write COMPLETE, DIGEST, COMPONENTS CSVs
 │       ├── pipeline.py               # End-to-end orchestrator
 │       └── cli.py                    # Click CLI entry point
+├── input/                            # Demo input files (tracked in git)
+│   ├── PERSON.csv                    # 1,000 simulated enrollees (BY 2025)
+│   ├── DIAG.csv                      # 2,301 diagnosis records
+│   ├── NDC.csv                       # 2,376 NDC drug records
+│   ├── HCPCS.csv                     # 60 HCPCS procedure records
+│   ├── SUMMARY.txt                   # Simulation run summary
+│   └── manifest.json                 # Reproducibility manifest
+├── output/                           # Scoring output (gitignored)
 ├── data/                             # Cached CMS materials (gitignored)
 └── tests/
 ```

@@ -171,7 +171,7 @@ class ScoringEngine:
 
         Expected columns:
             person_df: ENROLID, SEX (1=M, 2=F), AGE_LAST, METAL, CSR_INDICATOR,
-                       ENROL_MONTHS_DURATION
+                       ENROLDURATION
             diag_df:   ENROLID, DIAG
             ndc_df:    ENROLID, NDC  (optional)
             hcpcs_df:  ENROLID, HCPCS (optional)
@@ -210,7 +210,7 @@ class ScoringEngine:
             sex = int(person["SEX"])  # 1=Male, 2=Female
             metal = str(person["METAL"]).strip().lower()
             csr_ind = int(person["CSR_INDICATOR"])
-            enrol_months = int(person["ENROL_MONTHS_DURATION"])
+            enrol_months = int(person["ENROLDURATION"])
 
             # Determine model segment
             if age <= 1:
@@ -299,6 +299,14 @@ class ScoringEngine:
             components_df = components_df.merge(
                 person_df[["ENROLID"] + person_cols], on="ENROLID", how="left"
             )
+
+        # Sort outputs by ENROLID; COMPONENTS additionally by VARIABLE
+        complete_df = complete_df.sort_values("ENROLID").reset_index(drop=True)
+        digest_df = digest_df.sort_values("ENROLID").reset_index(drop=True)
+        if not components_df.empty:
+            components_df = components_df.sort_values(
+                ["ENROLID", "VARIABLE"]
+            ).reset_index(drop=True)
 
         return ScoringResult(
             complete=complete_df,

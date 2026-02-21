@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-02-21T20:12:31.524144+00:00",
+  "git_commit": "4250b3b8933d5e3488276d6dda2baef88e97f581",
+  "package_version": "0.1.0",
+  "python_version": "3.11.12 (main, Apr  8 2025, 14:15:29) [Clang 15.0.0 (clang-1500.1.0.2.5)]",
+  "config": {
+    "meps_years": [
+      2023
+    ],
+    "benefit_year": 2025,
+    "random_seed": 42,
+    "dx_mode": "single",
+    "n_simulations": 500,
+    "age_min": 0,
+    "age_max": 72,
+    "output_prefix": "",
+    "sample_size": 1000
+  },
+  "output_files": {
+    "person": {
+      "path": "/Users/cslester/Projects/git-local/hhshcc-diy-model/input/PERSON.csv",
+      "size_bytes": 43798,
+      "row_count": 1000
+    },
+    "diag": {
+      "path": "/Users/cslester/Projects/git-local/hhshcc-diy-model/input/DIAG.csv",
+      "size_bytes": 81579,
+      "row_count": 2301
+    },
+    "ndc": {
+      "path": "/Users/cslester/Projects/git-local/hhshcc-diy-model/input/NDC.csv",
+      "size_bytes": 71292,
+      "row_count": 2376
+    },
+    "hcpcs": {
+      "path": "/Users/cslester/Projects/git-local/hhshcc-diy-model/input/HCPCS.csv",
+      "size_bytes": 1454,
+      "row_count": 60
+    }
+  },
+  "validation": {
+    "passed": true,
+    "error_count": 0,
+    "errors": []
+  },
+  "elapsed_seconds": 32.58
+}

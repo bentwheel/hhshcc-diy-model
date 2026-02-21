@@ -1,0 +1,66 @@
+================================================================================
+HHS-HCC MODEL DATA SIMULATOR - RUN SUMMARY
+================================================================================
+
+Configuration
+  MEPS year(s):       2023
+  Benefit year:       2025
+  Random seed:        42
+  DX mode:            single
+  Age range:          0-72
+  Sample size:        1000
+  Output prefix:      (none)
+  Output directory:   /Users/cslester/Projects/git-local/hhshcc-diy-model/input
+
+Output Files
+  PERSON.csv:         1,000 rows
+  DIAG.csv:           2,301 rows
+  NDC.csv:            2,376 rows
+  HCPCS.csv:             60 rows
+
+Age Group Distribution
+  Age Band            Count    Pct
+  0-1                    25    2.5%
+  2-5                    42    4.2%
+  6-17                  151   15.1%
+  18-25                  88    8.8%
+  26-34                 138   13.8%
+  35-44                 175   17.5%
+  45-54                 177   17.7%
+  55-64                 142   14.2%
+  65+                    62    6.2%
+
+Metal Level Distribution
+  Metal               Count    Pct
+  silver                708   70.8%
+  bronze                214   21.4%
+  gold                   55    5.5%
+  platinum               16    1.6%
+  catastrophic            7    0.7%
+
+CSR Indicator Distribution
+  CSR                 Count    Pct
+  1                     921   92.1%
+  3                      79    7.9%
+
+Per-Member Utilization by Age Group
+  Age Band           Avg DX  Avg NDC  Avg HCPCS
+  0-1                   1.0      0.7        0.0
+  2-5                   1.0      0.5        0.0
+  6-17                  1.1      0.9        0.0
+  18-25                 1.4      1.1        0.0
+  26-34                 1.6      1.6        0.0
+  35-44                 1.9      1.9        0.0
+  45-54                 3.1      3.6        0.1
+  55-64                 3.6      4.0        0.2
+  65+                   5.2      5.4        0.1
+  Total                 2.3      2.4        0.1
+
+Unique Code Counts
+  ICD-10 codes:        631
+  NDC codes:         1,423
+  HCPCS codes:           7
+
+Validation: PASSED
+Elapsed: 32.6s
+================================================================================
