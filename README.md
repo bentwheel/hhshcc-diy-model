@@ -304,6 +304,10 @@ hhshcc-diy-model/
 └── tests/
 ```
 
+## SQL Data Model
+
+For a relational database representation of the CMS DIY tables and scoring results, see [docs/SQL_DATA_MODEL.md](docs/SQL_DATA_MODEL.md). This document maps every CMS Excel table to normalized SQL `CREATE TABLE` statements, covering reference data, input tables, and output tables, with notes on how each table relates to the Python `ModelData` fields and the scoring algorithm steps.
+
 ## Related Projects
 
 - [hhshcc-model-data-simulator](https://github.com/bentwheel/hhshcc-model-data-simulator) &mdash; Generates realistic, HIPAA-safe test input files for this model using publicly available MEPS survey data. Use it to produce the PERSON.csv, DIAG.csv, NDC.csv, and HCPCS.csv files that this project consumes.
