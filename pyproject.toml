@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hhshcc-diy"
+version = "0.1.0"
+description = "Implementation of the 2023-2025 HHS-HCC DIY Model Instructions in Python"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "C. Seth Lester", email = "cslester@gmail.com"},
+]
+dependencies = [
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+    "requests>=2.28",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+hhshcc-diy = "hhshcc_diy.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
